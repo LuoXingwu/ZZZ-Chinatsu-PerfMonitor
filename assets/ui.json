@@ -1,0 +1,20 @@
+{
+  "defaultName": "千夏",
+  "names": [
+    "千夏",
+    "南宫",
+    "爱芮"
+  ],
+  "labelFpsModeShort": "FPS",
+  "modeGame": "FPS/游戏中",
+  "modeDaily": "刷新率/桌面",
+  "lineFallback": "……",
+  "menuSay": "📣 说句话",
+  "menuPose": "🎨 换个动作",
+  "menuReset": "↺ 复位布局与缩放",
+  "menuScreen": "🔀 切换监控屏（泡泡酱）",
+  "menuTop": "📌 置顶",
+  "menuUntop": "📌 取消置顶",
+  "menuQuit": "👋 退出",
+  "shortcutName": "性能监视桌宠"
+}

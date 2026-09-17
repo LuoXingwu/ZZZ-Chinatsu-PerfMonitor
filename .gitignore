@@ -1,0 +1,8 @@
+# runtime state is generated at run time and must not be committed
+runtime/
+config.json
+
+# Windows cruft
+Thumbs.db
+desktop.ini
+*.tmp
