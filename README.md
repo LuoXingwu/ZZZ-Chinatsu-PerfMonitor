@@ -61,14 +61,14 @@ WPF 侧（UI 线程）
 
 | 类别 | 表现 | 怎么处理 |
 |---|---|---|
-| 残留/提权的常驻进程 | 例如 v4 时期的探针留下的 `PresentMon`（ETW 抓帧工具）会一直跑，桌宠退出也不消失；v4 还会每 5 秒起一次 `nvidia-smi` 且无超时，卡住时会堆积成孤儿进程 | 跑 `tools\check_system_load.ps1` 看第 2 节；清残留用提权守护：`runtime\command.txt` 写 `cleanup-leftovers` 后运行计划任务 `ZZZSunnaMonitor_RTSS`（命令 30 秒未被消费会自动清除并记日志） |
+| 残留/提权的常驻进程 | 抓帧/监控类探针（如 `PresentMon` 一类 ETW 工具）、被无超时反复拉起的子进程等后台残留会一直跑，桌宠退出也不消失 | 跑 `tools\check_system_load.ps1` 看第 2 节；清残留用提权守护：`runtime\command.txt` 写 `cleanup-leftovers` 后运行计划任务 `ZZZSunnaMonitor_RTSS`（命令 30 秒未被消费会自动清除并记日志） |
 | RTSS 自身的设置 | RTSS 是独立程序，**桌宠退出后它仍在**；若开了 OSD 或限帧（Global → Framerate limit）会直接影响游戏帧率 | 托盘退出 RTSS，或在 RTSS 里关掉 OSD / 把限帧设为 0 |
 | 全屏模式被迫降级 | 置顶窗口会阻止游戏进入独占全屏/独立翻转，游戏退化成窗口化走 DWM 合成 → 帧率明显下降，而且**要重启游戏才能恢复**（这就是"退出桌宠也没用"的典型情形） | 玩之前右键取消置顶（会记住），或把 `config.json` 的 `untopInGame` 设为 `true`（检测到游戏时自动取消置顶，游戏结束自动恢复） |
 
 `tools\check_system_load.ps1` 一次性给出：桌宠实例数与 CPU、常驻相关进程（含是否可被结束=是否提权）、
 六个窗口的置顶状态、GPU 当前利用率；并提示怎么判读。
 
-## 交互（v6：位置固定，只有整体缩放）
+## 交互（位置固定，只有整体缩放）
 
 | 操作 | 效果 |
 |---|---|
@@ -83,7 +83,7 @@ WPF 侧（UI 线程）
 
 ### 人物动作什么时候会变？（回答"除了点击，会不会自己随机换"）
 
-**不会随机换**。v4 那种"每 30 秒纯随机"已取消。动作只在这三种情况下变：
+**不会随机换**。动作只在这三种情况下变：
 
 | 触发 | 说明 | 频率 |
 |---|---|---|
@@ -118,7 +118,7 @@ WPF 侧（UI 线程）
 程序按这个内框设内边距，并且**每条台词都会用 `FormattedText` 实测行数**，装不下就自动缩字号（最多缩到 55%），
 所以再长的台词也不会画到气泡外面。`petcmd.txt: linetest` 可对全部台词做一次装填体检。
 
-## 配置（`config.json`，v6）
+## 配置（`config.json`）
 
 ```json
 { "cfgVer": 6, "screenIdx": 0, "topmost": true, "untopInGame": false, "groupScale": 1.0,
@@ -211,8 +211,10 @@ ZZZ-Sunna-PerfMonitor/
 
 ## 许可
 
-MIT（见 LICENSE）。美术素材（assets/）归项目作者所有，随包分发供个人使用；
-二次分发请保留本 README 与 LICENSE。
+代码部分以 MIT 开源（见 LICENSE）。**制作人：洛星舞（LuoXingwu）**。
+
+**美术素材（`assets/` 全部内容：人物立绘、帧动画、面板/气泡/配件美术等）版权归制作人洛星舞所有**，
+随包分发仅供个人使用；**转发、二次分发或转载请注明制作人洛星舞**，并保留本 README 与 LICENSE。
 
 `Redist\` 内的 RivaTuner Statistics Server 安装包为**官方原版**（© Unwinder / Guru3D，
 免费软件），为方便用户随包附带、未做任何修改；RTSS 的权利归其作者所有。
