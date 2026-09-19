@@ -2,8 +2,7 @@
 
 **ZZZ Sunna PerfMonitor · v1.0**
 
-> 一只趴在桌面边缘的灰绿长发和风女仆娘——千夏，实时播报你选定屏幕的
-> **FPS / CPU / GPU / 内存**。纯 PowerShell 5.1 + WPF，**零依赖、免安装**，中文口吻气泡。
+> 实时播报你选定屏幕的 **FPS / CPU / GPU / 内存**。纯 PowerShell 5.1 + WPF。
 
 ## 快速开始
 
