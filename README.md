@@ -61,7 +61,7 @@ WPF 侧（UI 线程）
 
 | 类别 | 表现 | 怎么处理 |
 |---|---|---|
-| 残留/提权的常驻进程 | 例如 v4 时期的探针留下的 `PresentMon`（ETW 抓帧工具）会一直跑，桌宠退出也不消失；v4 还会每 5 秒起一次 `nvidia-smi` 且无超时，卡住时会堆积成孤儿进程 | 跑 `tools\check_system_load.ps1` 看第 2 节；清残留用提权守护：`runtime\command.txt` 写 `cleanup-leftovers` 后运行计划任务 `ZZZSunnaMonitor_RTSS` |
+| 残留/提权的常驻进程 | 例如 v4 时期的探针留下的 `PresentMon`（ETW 抓帧工具）会一直跑，桌宠退出也不消失；v4 还会每 5 秒起一次 `nvidia-smi` 且无超时，卡住时会堆积成孤儿进程 | 跑 `tools\check_system_load.ps1` 看第 2 节；清残留用提权守护：`runtime\command.txt` 写 `cleanup-leftovers` 后运行计划任务 `ZZZSunnaMonitor_RTSS`（命令 30 秒未被消费会自动清除并记日志） |
 | RTSS 自身的设置 | RTSS 是独立程序，**桌宠退出后它仍在**；若开了 OSD 或限帧（Global → Framerate limit）会直接影响游戏帧率 | 托盘退出 RTSS，或在 RTSS 里关掉 OSD / 把限帧设为 0 |
 | 全屏模式被迫降级 | 置顶窗口会阻止游戏进入独占全屏/独立翻转，游戏退化成窗口化走 DWM 合成 → 帧率明显下降，而且**要重启游戏才能恢复**（这就是"退出桌宠也没用"的典型情形） | 玩之前右键取消置顶（会记住），或把 `config.json` 的 `untopInGame` 设为 `true`（检测到游戏时自动取消置顶，游戏结束自动恢复） |
 
@@ -93,7 +93,7 @@ WPF 侧（UI 线程）
 
 想要更活泼：在 `config.json` 的 `statePoses` 给某个情绪多配几个姿势（如 `"idle": ["idle","sleepy"]`），或调小 `rotateSec`。
 
-### 台词与情境的对应（`assets/lines.json`，11 个池 / 47 条）
+### 台词与情境的对应（`assets/lines.json`，12 个池 / 49 条）
 
 | 触发条件 | 台词池 | 条数 |
 |---|---|---|
@@ -107,6 +107,7 @@ WPF 侧（UI 线程）
 | 情绪=asleep（23:00–07:00、负载≤15） | `night` | 2 |
 | 其他（默认闲聊） | `browsing` | 8 |
 | 点击人物换姿势时 | `idle_switch` | 4 |
+| 单屏时点击泡泡酱（没有别的屏可切） | `single_screen` | 2 |
 
 台词按情境挑选后会插入实时数据（`{fps}`/`{cpu}`/`{gpu}`/`{mem}`/`{load}`），并在日志里留一行
 `say [长度] pool=<池> emo=<情绪> mode=… load=… :: 内容`，可以直接核对"什么情况说了什么话"。
@@ -194,7 +195,7 @@ ZZZ-Sunna-PerfMonitor/
 │   ├── wpm/           7 个姿势的帧动画（151 帧 @30fps BGRA）
 │   ├── panel|bubble|accessory/   面板/气泡/配件美术
 │   ├── ui.json        界面文案与屏幕昵称（names 数组，默认 千夏/南宫/爱芮，可改）
-│   ├── lines.json     11 个情境池 / 47 条台词（可自行增删，改完 petcmd.txt 写 reload 生效）
+│   ├── lines.json     12 个情境池 / 49 条台词（可自行增删，改完 petcmd.txt 写 reload 生效）
 ├── daemon/            启动器（vbs）、RTSS 一键安装、守护与提权任务注册
 ├── tools/             验收与诊断：smoke_test / input_test / rtss_dump / check_system_load 等
 ├── Redist/            RTSS 官方原版安装包（一键安装用，未修改）
